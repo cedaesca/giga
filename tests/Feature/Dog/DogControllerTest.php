@@ -3,7 +3,9 @@
 namespace Tests\Feature;
 
 use App\Models\Dog;
+use Exception;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Log\Logger;
 use Tests\TestCase;
 
 class DogControllerTest extends TestCase
@@ -58,5 +60,30 @@ class DogControllerTest extends TestCase
 
         $response->assertSessionHasErrors(['name', 'birth_date']);
         $this->assertCount(0, Dog::all());
+    }
+
+    /** @test */
+    public function exception_is_handled_as_expected()
+    {
+        $toBeCreatedDog = Dog::factory()->make()->toArray();
+        $exceptionMessage = 'Forced Exception';
+
+        $dogMock = $this->mock(Dog::class);
+
+        $dogMock
+            ->shouldReceive('create')
+            ->andThrow(new Exception($exceptionMessage));
+
+        $loggerMock = $this->mock(Logger::class);
+
+        $loggerMock
+            ->shouldReceive('error')
+            ->with("Error during dog creation: {$exceptionMessage}");
+
+        $this->app->instance(Dog::class, $dogMock);
+
+        $response = $this->post('/dogs', $toBeCreatedDog);
+
+        $response->assertSessionHasErrors();
     }
 }
