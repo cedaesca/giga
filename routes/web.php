@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DogController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('dogs.create');
+});
+
+Route::controller(DogController::class)->group(function () {
+    Route::get('/dogs/create', 'create')->name('dogs.create');
+    Route::post('/dogs', 'store')->name('dogs.store');
 });
