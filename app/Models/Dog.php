@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Dog extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'birth_date',
+        'is_birth_date_exact'
+    ];
 }
