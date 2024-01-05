@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('dogs', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->date('birth_date');
+            $table->boolean('is_birth_date_exact');
             $table->timestamps();
         });
     }
