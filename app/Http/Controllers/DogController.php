@@ -24,6 +24,8 @@ class DogController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        $redirect = redirect()->route('dogs.create');
+
         $validated = $request->validate([
             'name' => 'required|min:2|max:255',
             'birth_date' => 'required|date',
@@ -35,13 +37,9 @@ class DogController extends Controller
         } catch (Exception $e) {
             Log::error('Error during dog creation: ' . $e->getMessage());
 
-            return redirect()
-                ->route('dogs.create')
-                ->withErrors('An error occurred while creating the dog. Please try again.');
+            return $redirect->withErrors('An error occurred while creating the dog. Please try again.');
         }
 
-        return redirect()
-            ->route('dogs.create')
-            ->with('success', 'Dog created successfully');
+        return $redirect->with('success', 'Dog created successfully');
     }
 }
