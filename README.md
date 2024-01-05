@@ -5,6 +5,7 @@
 -   PHP 8.2 (The 8.3 version breaks some packages, make sure you're on 8.2)
 -   MySQL (Tested on 8.0, probably works on lower versions)
 -   Nodejs ^20.10.0 (Probably works on lower versions too, but was tested using this one)
+-   You must have the `pdo_sqlite` extension enabled in your `php.ini` to run the tests.
 
 ## Installation
 
