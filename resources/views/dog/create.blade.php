@@ -39,7 +39,7 @@
                     <div class="mb-3 form-check">
                         <input type="hidden" name="is_birth_date_exact" value="0">
                         <input type="checkbox" class="form-check-input" id="is_birth_date_exact" name="is_birth_date_exact" value="1" {{ old('is_birth_date_exact') ? 'checked' : '' }}>
-                        <label for="is_birth_date_exact" class="form-check-label">Is the dog's birth date exact?</label>
+                        <label for="is_birth_date_exact" class="form-check-label">The provided date is the dog's exact birth date</label>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
