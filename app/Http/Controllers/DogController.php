@@ -11,19 +11,22 @@ use Illuminate\View\View;
 
 class DogController extends Controller
 {
-    /**
-     * Show the form for creating a new resource.
-     */
+    protected $dog;
+
+    public function __construct(Dog $dog)
+    {
+        $this->dog = $dog;
+    }
+
     public function create(): View
     {
         return view('dog.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request): RedirectResponse
     {
+        $redirect = redirect()->route('dogs.create');
+
         $validated = $request->validate([
             'name' => 'required|min:2|max:255',
             'birth_date' => 'required|date',
@@ -31,17 +34,13 @@ class DogController extends Controller
         ]);
 
         try {
-            Dog::create($validated);
+            $this->dog->create($validated);
         } catch (Exception $e) {
             Log::error('Error during dog creation: ' . $e->getMessage());
 
-            return redirect()
-                ->route('dogs.create')
-                ->withErrors('An error occurred while creating the dog. Please try again.');
+            return $redirect->withErrors('An error occurred while creating the dog. Please try again.');
         }
 
-        return redirect()
-            ->route('dogs.create')
-            ->with('success', 'Dog created successfully');
+        return $redirect->with('success', 'Dog created successfully');
     }
 }
