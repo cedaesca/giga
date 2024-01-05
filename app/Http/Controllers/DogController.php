@@ -6,16 +6,18 @@ use App\Models\Dog;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Log\Logger;
 use Illuminate\View\View;
 
 class DogController extends Controller
 {
-    protected $dog;
+    protected Dog $dog;
+    protected Logger $logger;
 
-    public function __construct(Dog $dog)
+    public function __construct(Dog $dog, Logger $logger)
     {
         $this->dog = $dog;
+        $this->logger = $logger;
     }
 
     public function create(): View
@@ -36,7 +38,7 @@ class DogController extends Controller
         try {
             $this->dog->create($validated);
         } catch (Exception $e) {
-            Log::error('Error during dog creation: ' . $e->getMessage());
+            $this->logger->error('Error during dog creation: ' . $e->getMessage());
 
             return $redirect->withErrors('An error occurred while creating the dog. Please try again.');
         }
